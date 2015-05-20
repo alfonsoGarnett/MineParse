@@ -25,5 +25,16 @@
 </div>
 <pre id="output"></pre>
 
+<script>
+  var input = document.getElementById('input'),
+      output = document.getElementById('output'),
+      parseBtn = document.getElementById('parse');
+  
+  parseBtn.onclick = function () {
+    var result = mineParse( input.value );
+    output.appendChild( result.parsed );
+  };
+</script>
+
 </body>
 </html>
