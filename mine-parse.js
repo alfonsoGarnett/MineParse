@@ -24,7 +24,7 @@
         '§l': 'font-weight:bold',
         '§m': 'text-decoration:line-through',
         '§n': 'text-decoration:underline',
-        '§o': 'font-style:italic',
+        '§o': 'font-style:italic'
     };
 
     function obfuscate(string, elem) {
@@ -94,7 +94,7 @@
             apply = [],
             tmpStr,
             deltaIndex,
-            final = document.createElement('pre'),
+            finalPre = document.createElement('pre'),
             i;
         string = string.replace(/\n|\\n/g, '<br>');
         for (i = 0, len = codes.length; i < len; i++) {
@@ -102,7 +102,7 @@
             string = string.replace(codes[i], '\x00\x00');
         }
         if (indexes[0] !== 0) {
-            final.appendChild(applyCode(string.substring(0, indexes[0]), []));
+            finalPre.appendChild(applyCode(string.substring(0, indexes[0]), []));
         }
         for (i = 0; i < len; i++) {
             indexDelta = indexes[i + 1] - indexes[i];
@@ -120,9 +120,9 @@
                 apply = apply.slice(apply.lastIndexOf('§r') + 1);
             }
             tmpStr = string.substring(indexes[i], indexes[i + 1]);
-            final.appendChild(applyCode(tmpStr, apply));
+            finalPre.appendChild(applyCode(tmpStr, apply));
         }
-        return final;
+        return finalPre;
     }
 
     function clearObfuscators(id) {
