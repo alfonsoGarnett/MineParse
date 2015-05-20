@@ -78,12 +78,11 @@
 	}
 
 	function parseStyle(string) {
-	    var codes = string.match(/§.{1}/g),
+	    var codes = string.match(/§.{1}/g) || [],
 	        indexes = [],
 	        apply = [],
 	        tmpStr,
 	        deltaIndex,
-	        noCode,
 	        final = document.createDocumentFragment(),
 	        i;
 	    string = string.replace(/\n|\\n/g, '<br>');
