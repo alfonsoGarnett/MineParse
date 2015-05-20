@@ -55,6 +55,7 @@
 
             obfuscators[_id].push(
                 window.setInterval(function () {
+                    // console.log(currId);
                     if (i >= len) i = 0;
                     obsStr = replaceRand(obsStr, i);
                     el.innerHTML = obsStr;
@@ -130,15 +131,20 @@
         for (; i--;) {
             clearInterval(obfuscators[id][i]);
         }
-        delete obfuscators[id];
+        alreadyParsed[id] = [];
+        obfuscators[id] = [];
     }
 
     window.mineParse = function initParser(input) {
         var parsed,
             i = _id;
-        for (; i--;) {
-            if (!document.contains(alreadyParsed[i])) {
-                clearObfuscators(i);
+        if(i > 0) {
+            for (; i--;) {
+                if(alreadyParsed[i].nodeType) {
+                    if (!document.contains(alreadyParsed[i])) {
+                        clearObfuscators(i);
+                    }
+                }
             }
         }
         parsed = parseStyle(input);
