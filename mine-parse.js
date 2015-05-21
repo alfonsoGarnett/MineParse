@@ -1,78 +1,158 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <title>MineParse Demo</title>
-  <link rel="stylesheet" href="style/style.css">
-  <script src="js/mine-parse.js"></script>
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-</head>
-<body>
-<div id="mainContainer">
-  <h1> MineParse </h1>
-  <div id="inputContainer">
-      <div class="containerLabel">
-          <i class="fa fa-pencil-square"></i>
-          Input
-      </div>
-      <textarea id="input">
-§nMinecraft Formatting
+(function () {
 
-§r§00 §11 §22 §33
-§44 §55 §66 §77
-§88 §99 §aa §bb
-§cc §dd §ee §ff
-    
-§r§0k §kMinecraft
-§rl §lMinecraft
-§rm §mMinecraft
-§rn §nMinecraft
-§ro §oMinecraft
-§rr §rMinecraft
-      </textarea>
-      <button id="parse">
-          <i class="fa fa-angle-right"></i>
-          Parse
-      </button>
-  </div>
-  <div id="inBetween"></div>
-  <div id="outputContainer">
-      <div class="containerLabel">
-          <i class="fa fa-eye"></i>
-          Output <span id="parseTime"></span>
-      </div>
-      <div id="output"></div>
-  </div>
-  <script>
-    var input = document.getElementById('input'),
-        output = document.getElementById('output'),
-        parseBtn = document.getElementById('parse'),
-        parseTime = document.getElementById('parseTime'),
-        outputContainer = document.getElementById('outputContainer'),
-        scrollInterval;
+    var _id = 0,
+        obfuscators = {},
+        alreadyParsed = [];
 
-    parseBtn.onclick = function () {
-      var parseStart = Date.now(),
-          result = mineParse( input.value ),
-          scroll = document.body.scrollTop;
-      parseTime.innerHTML = '~ ' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
-      output.innerHTML = '';
-      if(window.innerWidth < 850) {
-        scrollInterval = setInterval(function () {
-            scroll += 5;
-            window.scrollTo(0, scroll);
-            if(scroll >= outputContainer.offsetTop) {
-                window.scrollTo(0, outputContainer.offsetTop);
-                output.appendChild( result.parsed );
-                clearInterval(scrollInterval);
-            }
-        }, 0);
-      } else {
-          output.appendChild( result.parsed );
-      }
+    var styleMap = {
+        '§0': 'color:#000000',
+        '§1': 'color:#0000AA',
+        '§2': 'color:#00AA00',
+        '§3': 'color:#00AAAA',
+        '§4': 'color:#AA0000',
+        '§5': 'color:#AA00AA',
+        '§6': 'color:#FFAA00',
+        '§7': 'color:#AAAAAA',
+        '§8': 'color:#555555',
+        '§9': 'color:#5555FF',
+        '§a': 'color:#55FF55',
+        '§b': 'color:#55FFFF',
+        '§c': 'color:#FF5555',
+        '§d': 'color:#FF55FF',
+        '§e': 'color:#FFFF55',
+        '§f': 'color:#FFFFFF',
+        '§l': 'font-weight:bold',
+        '§m': 'text-decoration:line-through',
+        '§n': 'text-decoration:underline',
+        '§o': 'font-style:italic'
     };
-  </script>
-</div>
-</body>
-</html>
+
+    function obfuscate(string, elem) {
+        var magicSpan,
+            currNode;
+        if (string.indexOf('<br>') > -1) {
+            elem.innerHTML = string;
+            for (var j = 0, len = elem.childNodes.length; j < len; j++) {
+                currNode = elem.childNodes[j];
+                if (currNode.nodeType === 3) {
+                    magicSpan = document.createElement('span');
+                    magicSpan.innerHTML = currNode.nodeValue;
+                    elem.replaceChild(magicSpan, currNode);
+                    init(magicSpan);
+                }
+            }
+        } else {
+            init(elem, string);
+        }
+
+        function init(el, str) {
+            var i = 0,
+                obsStr = str || el.innerHTML,
+                len = obsStr.length;
+            
+            obfuscators[_id].push(
+                window.setInterval(function () {
+                    if (i >= len) i = 0;
+                    obsStr = replaceRand(obsStr, i);
+                    el.innerHTML = obsStr;
+                    i++;
+                }, 0)
+            );
+        }
+
+        function randInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function replaceRand(string, i) {
+            var randChar = String.fromCharCode(randInt(64, 95));
+            return string.substr(0, i) + randChar + string.substr(i + 1, string.length);
+        }
+    }
+
+    function applyCode(string, codes) {
+        var elem = document.createElement('span'),
+            obfuscated = false;
+        string = string.replace(/\x00*/g, '');
+        for (var i = 0, len = codes.length; i < len; i++) {
+            elem.style.cssText += styleMap[codes[i]] + ';';
+            if (codes[i] === '§k') {
+                obfuscate(string, elem);
+                obfuscated = true;
+            }
+        }
+        if (!obfuscated) elem.innerHTML = string;
+        return elem;
+    }
+
+    function parseStyle(string) {
+        var codes = string.match(/§.{1}/g) || [],
+            indexes = [],
+            apply = [],
+            tmpStr,
+            deltaIndex,
+            finalPre = document.createElement('pre'),
+            i;
+        
+        if (!obfuscators[_id]) obfuscators[_id] = [];
+        string = string.replace(/\n|\\n/g, '<br>');
+
+        for (i = 0, len = codes.length; i < len; i++) {
+            indexes.push(string.indexOf(codes[i]));
+            string = string.replace(codes[i], '\x00\x00');
+        }
+        if (indexes[0] !== 0) {
+            finalPre.appendChild(applyCode(string.substring(0, indexes[0]), []));
+        }
+        for (i = 0; i < len; i++) {
+            indexDelta = indexes[i + 1] - indexes[i];
+            if (indexDelta === 2) {
+                while (indexDelta === 2) {
+                    apply.push(codes[i]);
+                    i++;
+                    indexDelta = indexes[i + 1] - indexes[i];
+                }
+                apply.push(codes[i]);
+            } else {
+                apply.push(codes[i]);
+            }
+            if (apply.lastIndexOf('§r') > -1) {
+                apply = apply.slice(apply.lastIndexOf('§r') + 1);
+            }
+            tmpStr = string.substring(indexes[i], indexes[i + 1]);
+            finalPre.appendChild(applyCode(tmpStr, apply));
+        }
+        return finalPre;
+    }
+
+    function clearObfuscators(id) {
+        var i = obfuscators[id].length;
+        for (; i--;) {
+            clearInterval(obfuscators[id][i]);
+        }
+        alreadyParsed[id] = [];
+        obfuscators[id] = [];
+    }
+
+    window.mineParse = function initParser(input) {
+        var parsed,
+            i = _id;
+        if(i > 0) {
+            for (; i--;) {
+                if(alreadyParsed[i].nodeType) {
+                    if (!document.contains(alreadyParsed[i])) {
+                        clearObfuscators(i);
+                    }
+                }
+            }
+        }
+        parsed = parseStyle(input);
+        alreadyParsed.push(parsed);
+        _id++;
+        return {
+            parsed: parsed,
+            raw: parsed.innerHTML
+        };
+    };
+
+}());
