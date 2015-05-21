@@ -52,27 +52,28 @@
         parseTime = document.getElementById('parseTime'),
         outputContainer = document.getElementById('outputContainer'),
         scrollInterval;
-
     parseBtn.onclick = function () {
-      var parseStart = Date.now(),
-          result = mineParse( input.value ),
-          scroll = document.body.scrollTop;
-      clearInterval(scrollInterval);
+      var scrollY = window.pageYOffset,
+          outputY = outputContainer.offsetTop,
+          parseStart = Date.now(),
+          result = mineParse( input.value );
+      
       parseTime.innerHTML = '~ ' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
+      clearInterval(scrollInterval);
       output.innerHTML = '';
+      
       if(window.innerWidth < 850) {
         scrollInterval = setInterval(function () {
-            scroll += 5;
-            window.scrollTo(0, scroll);
-            if(scroll >= outputContainer.offsetTop) {
-                window.scrollTo(0, outputContainer.offsetTop);
-                output.appendChild( result.parsed );
+            scrollY += 5;
+            window.scrollTo(0, scrollY);
+            if(scrollY >= outputY) {
+                window.scrollTo(0, outputY);
                 clearInterval(scrollInterval);
             }
         }, 0);
-      } else {
-          output.appendChild( result.parsed );
       }
+      
+      output.appendChild( result.parsed );
     };
   </script>
 </div>
