@@ -31,10 +31,10 @@ body {
     background: #050A0E;
     font-family:'Open Sans', sans-serif;
     overflow-x: hidden;
-    animation: flipInY 0.8s ease;
 }
 #mainContainer {
   padding:  5em 0 5em 0;
+  animation: flipInY 0.8s ease;
 }
 h1 {
     font-weight: bold;
