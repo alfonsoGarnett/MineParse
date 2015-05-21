@@ -56,6 +56,7 @@
       var parseStart = Date.now(),
           result = mineParse( input.value ),
           scroll = document.body.scrollTop;
+      clearInterval(scrollInterval);
       parseTime.innerHTML = '~ ' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
       output.innerHTML = '';
       if(window.innerWidth < 850) {
