@@ -57,12 +57,6 @@
               outputContainer = document.getElementById('outputContainer'),
               scrollInterval;
               
-          document.body.style.overflow = 'hidden';
-          
-          window.setTimeout(function () {
-              document.body.style.overflow = '';
-          }, 1000);
-          
           parseBtn.onclick = function () {
               var scrollY = window.pageYOffset,
                   outputY = outputContainer.offsetTop,
