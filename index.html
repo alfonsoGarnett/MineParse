@@ -54,9 +54,9 @@
       parseTime = document.getElementById('parseTime');
   
   parseBtn.onclick = function () {
-    var _parseTime = Date.now(),
+    var parseStart = Date.now(),
         result = mineParse( input.value );
-    parseTime.innerHTML = Date.now() - _parseTime;
+    parseTime.innerHTML = '~' + ( (Date.now() - parseStart) / 1000 );
     output.innerHTML = '';
     output.appendChild( result.parsed );
   };
