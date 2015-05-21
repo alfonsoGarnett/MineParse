@@ -6,6 +6,7 @@
         padding: 0.05em;
     }
     #inBetween:before {
+        display: inline-block;
         font-family:'FontAwesome';
         content:"\f107";
         animation: bounceDown 2s infinite;
@@ -13,6 +14,7 @@
 }
 @media (min-width: 850px) {
     #inBetween:before {
+        display: inline-block;
         font-family:'FontAwesome';
         content:"\f105";
         animation: bounceRight 2s infinite;
@@ -43,6 +45,7 @@ h1 {
     text-shadow: 0 0 50px #5EB4E7;
     padding: 1em;
     margin:  0;
+    animation: fadeIn 2s ease-in-out;
 }
 #inputContainer, #outputContainer {
     display: inline-block;
@@ -52,6 +55,7 @@ h1 {
     background: #152E3D;
     box-shadow: 0 0 4px #5EB4E7;
     vertical-align: middle;
+    animation: scaleIn 1s;
 }
 #inBetween {
     display: inline-block;
@@ -59,6 +63,7 @@ h1 {
     color: #5EB4E7;
     font-size: 4em;
     padding: 0.5em;
+    animation: scaleIn 1s;
 }
 #outputContainer {
     display: inline-block;
@@ -179,5 +184,21 @@ h1 {
     100% {
         transform: perspective(400px) rotateY(0deg);
         opacity: 1;
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1
+    }
+}
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
     }
 }
