@@ -56,7 +56,7 @@
   parseBtn.onclick = function () {
     var parseStart = Date.now(),
         result = mineParse( input.value );
-    parseTime.innerHTML = '~' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
+    parseTime.innerHTML = '~ ' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
     output.innerHTML = '';
     output.appendChild( result.parsed );
   };
