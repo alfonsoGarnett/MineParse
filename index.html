@@ -58,16 +58,20 @@
         result = mineParse( input.value );
     parseTime.innerHTML = '~ ' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
     output.innerHTML = '';
-    scrollInterval = setInterval(function () {
-        scroll += 5;
-        window.scrollTo(0, scroll);
-        if(scroll >= outputContainer.offsetTop) {
-            window.scrollTo(0, outputContainer.offsetTop);
-            console.log("there");
-            output.appendChild( result.parsed );
-            clearInterval(scrollInterval);
-        }
-    }, 0);
+    if(window.innerWidth < 850) {
+      scrollInterval = setInterval(function () {
+          scroll += 5;
+          window.scrollTo(0, scroll);
+          if(scroll >= outputContainer.offsetTop) {
+              window.scrollTo(0, outputContainer.offsetTop);
+              console.log("there");
+              output.appendChild( result.parsed );
+              clearInterval(scrollInterval);
+          }
+      }, 0);
+    } else {
+        output.appendChild( result.parsed );
+    }
   };
 </script>
 
