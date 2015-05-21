@@ -48,14 +48,10 @@
         function init(el, str) {
             var i = 0,
                 obsStr = str || el.innerHTML,
-                len = obsStr.length,
-                currId = _id;
-
-            if (!obfuscators[_id]) obfuscators[_id] = [];
-
+                len = obsStr.length;
+            
             obfuscators[_id].push(
                 window.setInterval(function () {
-                    // console.log(currId);
                     if (i >= len) i = 0;
                     obsStr = replaceRand(obsStr, i);
                     el.innerHTML = obsStr;
@@ -97,7 +93,10 @@
             deltaIndex,
             finalPre = document.createElement('pre'),
             i;
+        
+        if (!obfuscators[_id]) obfuscators[_id] = [];
         string = string.replace(/\n|\\n/g, '<br>');
+
         for (i = 0, len = codes.length; i < len; i++) {
             indexes.push(string.indexOf(codes[i]));
             string = string.replace(codes[i], '\x00\x00');
@@ -127,6 +126,7 @@
     }
 
     function clearObfuscators(id) {
+        console.log(id, obfuscators);
         var i = obfuscators[id].length;
         for (; i--;) {
             clearInterval(obfuscators[id][i]);
