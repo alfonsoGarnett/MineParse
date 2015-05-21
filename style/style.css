@@ -1,6 +1,9 @@
 body, html {
     height: 100%;
 }
+button::-moz-focus-inner {
+  border: 0;
+}
 body {
   text-align: center;
   background: #050A0E;
