@@ -42,7 +42,7 @@
 <div id="outputContainer">
     <div class="containerLabel">
         <i class="fa fa-eye"></i>
-        Output
+        Output <span id="parseTime"></span>
     </div>
     <div id="output"></div>
 </div>
@@ -50,10 +50,13 @@
 <script>
   var input = document.getElementById('input'),
       output = document.getElementById('output'),
-      parseBtn = document.getElementById('parse');
+      parseBtn = document.getElementById('parse'),
+      parseTime = document.getElementById('parseTime');
   
   parseBtn.onclick = function () {
-    var result = mineParse( input.value );
+    var _parseTime = Date.now(),
+        result = mineParse( input.value );
+    parseTime.innerHTML = Date.now() - _parseTime;
     output.innerHTML = '';
     output.appendChild( result.parsed );
   };
