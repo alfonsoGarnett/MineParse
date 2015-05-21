@@ -9,14 +9,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 </head>
 <body>
-
-<h1> MineParse </h1>
-<div id="inputContainer">
-    <div class="containerLabel">
-        <i class="fa fa-pencil-square"></i>
-        Input
-    </div>
-    <textarea id="input">
+<div id="mainContainer">
+  <h1> MineParse </h1>
+  <div id="inputContainer">
+      <div class="containerLabel">
+          <i class="fa fa-pencil-square"></i>
+          Input
+      </div>
+      <textarea id="input">
 §nMinecraft Formatting
 
 §r§00 §11 §22 §33
@@ -30,50 +30,50 @@
 §rn §nMinecraft
 §ro §oMinecraft
 §rr §rMinecraft
-    </textarea>
-    <button id="parse">
-        <i class="fa fa-angle-right"></i>
-        Parse
-    </button>
-</div>
-<div id="inBetween"></div>
-<div id="outputContainer">
-    <div class="containerLabel">
-        <i class="fa fa-eye"></i>
-        Output <span id="parseTime"></span>
-    </div>
-    <div id="output"></div>
-</div>
-<script>
-  var input = document.getElementById('input'),
-      output = document.getElementById('output'),
-      parseBtn = document.getElementById('parse'),
-      parseTime = document.getElementById('parseTime'),
-      outputContainer = document.getElementById('outputContainer'),
-      scroll = document.body.scrollTop,
-      scrollInterval;
-  
-  parseBtn.onclick = function () {
-    var parseStart = Date.now(),
-        result = mineParse( input.value );
-    parseTime.innerHTML = '~ ' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
-    output.innerHTML = '';
-    if(window.innerWidth < 850) {
-      scrollInterval = setInterval(function () {
-          scroll += 5;
-          window.scrollTo(0, scroll);
-          if(scroll >= outputContainer.offsetTop) {
-              window.scrollTo(0, outputContainer.offsetTop);
-              console.log("there");
-              output.appendChild( result.parsed );
-              clearInterval(scrollInterval);
-          }
-      }, 0);
-    } else {
-        output.appendChild( result.parsed );
-    }
-  };
-</script>
+      </textarea>
+      <button id="parse">
+          <i class="fa fa-angle-right"></i>
+          Parse
+      </button>
+  </div>
+  <div id="inBetween"></div>
+  <div id="outputContainer">
+      <div class="containerLabel">
+          <i class="fa fa-eye"></i>
+          Output <span id="parseTime"></span>
+      </div>
+      <div id="output"></div>
+  </div>
+  <script>
+    var input = document.getElementById('input'),
+        output = document.getElementById('output'),
+        parseBtn = document.getElementById('parse'),
+        parseTime = document.getElementById('parseTime'),
+        outputContainer = document.getElementById('outputContainer'),
+        scroll = document.body.scrollTop,
+        scrollInterval;
 
+    parseBtn.onclick = function () {
+      var parseStart = Date.now(),
+          result = mineParse( input.value );
+      parseTime.innerHTML = '~ ' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
+      output.innerHTML = '';
+      if(window.innerWidth < 850) {
+        scrollInterval = setInterval(function () {
+            scroll += 5;
+            window.scrollTo(0, scroll);
+            if(scroll >= outputContainer.offsetTop) {
+                window.scrollTo(0, outputContainer.offsetTop);
+                console.log("there");
+                output.appendChild( result.parsed );
+                clearInterval(scrollInterval);
+            }
+        }, 0);
+      } else {
+          output.appendChild( result.parsed );
+      }
+    };
+  </script>
+</div>
 </body>
 </html>
