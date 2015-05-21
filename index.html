@@ -36,9 +36,7 @@
         Parse
     </button>
 </div>
-<div id="inBetween">
-    <i class="fa fa-angle-right bounceRight"></i>
-</div>
+<div id="inBetween"></div>
 <div id="outputContainer">
     <div class="containerLabel">
         <i class="fa fa-eye"></i>
@@ -46,19 +44,30 @@
     </div>
     <div id="output"></div>
 </div>
-
 <script>
   var input = document.getElementById('input'),
       output = document.getElementById('output'),
       parseBtn = document.getElementById('parse'),
-      parseTime = document.getElementById('parseTime');
+      parseTime = document.getElementById('parseTime'),
+      outputContainer = document.getElementById('outputContainer'),
+      scroll = document.body.scrollTop,
+      scrollInterval;
   
   parseBtn.onclick = function () {
     var parseStart = Date.now(),
         result = mineParse( input.value );
     parseTime.innerHTML = '~ ' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
     output.innerHTML = '';
-    output.appendChild( result.parsed );
+    scrollInterval = setInterval(function () {
+        scroll += 5;
+        window.scrollTo(0, scroll);
+        if(scroll >= outputContainer.offsetTop) {
+            window.scrollTo(0, outputContainer.offsetTop);
+            console.log("there");
+            output.appendChild( result.parsed );
+            clearInterval(scrollInterval);
+        }
+    }, 0);
   };
 </script>
 
