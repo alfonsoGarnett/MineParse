@@ -33,11 +33,15 @@ body {
     overflow-x: hidden;
     animation: flipInY 0.8s ease;
 }
+#mainContainer {
+  padding:  5em 0 5em 0;
+}
 h1 {
     font-weight: bold;
     color: #5EB4E7;
     text-shadow: 0 0 50px #5EB4E7;
     padding: 1em;
+    margin:  0;
 }
 #inputContainer, #outputContainer {
     display: inline-block;
