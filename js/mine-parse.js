@@ -126,7 +126,6 @@
     }
 
     function clearObfuscators(id) {
-        console.log(id, obfuscators);
         var i = obfuscators[id].length;
         for (; i--;) {
             clearInterval(obfuscators[id][i]);
