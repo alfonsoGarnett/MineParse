@@ -46,35 +46,42 @@
       <div id="output"></div>
   </div>
   <script>
-    var input = document.getElementById('input'),
-        output = document.getElementById('output'),
-        parseBtn = document.getElementById('parse'),
-        parseTime = document.getElementById('parseTime'),
-        outputContainer = document.getElementById('outputContainer'),
-        scrollInterval;
-    parseBtn.onclick = function () {
-      var scrollY = window.pageYOffset,
-          outputY = outputContainer.offsetTop,
-          parseStart = Date.now(),
-          result = mineParse( input.value );
-      
-      parseTime.innerHTML = '~ ' + ( (Date.now() - parseStart) / 1000 ) + ' seconds';
-      clearInterval(scrollInterval);
-      output.innerHTML = '';
-      
-      if(window.innerWidth < 850) {
-        scrollInterval = setInterval(function () {
-            scrollY += 5;
-            window.scrollTo(0, scrollY);
-            if(scrollY >= outputY) {
-                window.scrollTo(0, outputY);
-                clearInterval(scrollInterval);
-            }
-        }, 0);
-      }
-      
-      output.appendChild( result.parsed );
-    };
+      (function () {
+
+          'use strict';
+
+          var input = document.getElementById('input'),
+              output = document.getElementById('output'),
+              parseBtn = document.getElementById('parse'),
+              parseTime = document.getElementById('parseTime'),
+              outputContainer = document.getElementById('outputContainer'),
+              scrollInterval;
+
+          parseBtn.onclick = function () {
+              var scrollY = window.pageYOffset,
+                  outputY = outputContainer.offsetTop,
+                  parseStart = Date.now(),
+                  result = mineParse(input.value);
+
+              parseTime.innerHTML = '~ ' + ((Date.now() - parseStart) / 1000) + ' seconds';
+              clearInterval(scrollInterval);
+              output.innerHTML = '';
+
+              if (window.innerWidth < 850) {
+                  scrollInterval = setInterval(function () {
+                      scrollY += 5;
+                      window.scrollTo(0, scrollY);
+                      if (scrollY >= outputY) {
+                          window.scrollTo(0, outputY);
+                          clearInterval(scrollInterval);
+                      }
+                  }, 0);
+              }
+
+              output.appendChild(result.parsed);
+          };
+
+      }());
   </script>
 </div>
 </body>
