@@ -37,7 +37,7 @@ h1 {
     font-weight: bold;
     color: #5EB4E7;
     text-shadow: 0 0 50px #5EB4E7;
-    margin: 1em;
+    padding: 1em;
 }
 #inputContainer, #outputContainer {
     display: inline-block;
